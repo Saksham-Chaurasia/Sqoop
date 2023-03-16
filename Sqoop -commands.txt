@@ -1,0 +1,62 @@
+Sqoop -commands
+
+import command
+
+1. Mysql to hdfs
+
+a) normally
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table student -m1 --hadoop fs -ls
+
+b) using target directory 
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table student -m1 --target-dir \sqoop_p
+
+c) using query
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --query 'select * from table where $CONDITIONS AND id > 2'--target-dir \sqoop_p\stud -m1
+
+d) using split by //split by is use to split the data of a particular column so it is evenly distribute and parallelism can happen, 
+if we are not using split by then it is default use that it 
+
+Split by:  It is used to specify column of the table used to generate splits for imports. If we don't have primary key then our responsibility or proper distribution of primary key, then we can evenly distribute data among the mappers. achieve the higher degree 
+of parllelism.
+
+
+Boundary Query: By default sqoop will use query select min(), max() from to find out boundaries for creating splits.
+--boundary-query
+
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --query 'select * from table where $CONDITIONS AND id > 2' --split-by id --target-dir /sqoop_p/stud 
+
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table cust --p --boundary-query 'select min(id),max(id) from cust where id>2' --target-dir /sqoo_Pstud --splity-by id;
+
+e) tab separated format to store table
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --query 'select * from table where $CONDITIONS AND id > 2' --split-by id --fields-terminated-by '\t' --input lines terminated by '\n'
+--target-dir /sqoop_p/stud
+
+
+MYSql to hive
+
+a) sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table student --hive table Student --create-hive-table --hive-import -m1 //in this i does not have to create hive table separately, or load the data everything is done in a single time
+
+sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table student --fields-terminated-by ',' --hive table Student --create-hive-table --hive-import -m1
+
+
+
+2. list databases
+sqoop list-databases --connect jdbc:mysql://localhost/ --username training --password training
+
+3. list tables
+sqoop list-tables --connect jdbc:mysql://localhost/saksham_p --username training --password training
+
+4. Export
+
+HDFS to Mysql
+sqoop export --connect jdbc:mysql://localhost/saksham_p --username training --password training --table name --export-dir /sqoop/name.txt -m1
+
+Hive to mysql
+sqoop export --connect jdbc:mysql://localhost/saksham_p --username training --password training --table 
+
+5. import-all-tables to a particular directory in hdfs
+sqoop import-all-tables --connect jdbc:mysql://localhost/saksham_p --username training --password training --warehouse-dir sq2
+
+
+
+
