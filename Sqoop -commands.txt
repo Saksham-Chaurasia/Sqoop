@@ -51,12 +51,14 @@ sqoop list-tables --connect jdbc:mysql://localhost/saksham_p --username training
 HDFS to Mysql
 sqoop export --connect jdbc:mysql://localhost/saksham_p --username training --password training --table name --export-dir /sqoop/name.txt -m1
 
-Hive to mysql
-sqoop export --connect jdbc:mysql://localhost/saksham_p --username training --password training --table 
+
 
 5. import-all-tables to a particular directory in hdfs
 sqoop import-all-tables --connect jdbc:mysql://localhost/saksham_p --username training --password training --warehouse-dir sq2
 
 
+Mysql to hbase
+
+1. sqoop import --connect jdbc:mysql://localhost/saksham_p --username training --password training --table demo --hbase-table --column-family cf --hbase-row-key pid --hbase-create-table -m1
 
 
